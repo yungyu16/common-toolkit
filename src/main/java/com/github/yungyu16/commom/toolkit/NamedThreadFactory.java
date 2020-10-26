@@ -1,4 +1,4 @@
-package com.github.yungyu16.commom.toolkit.base;
+package com.github.yungyu16.commom.toolkit;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;

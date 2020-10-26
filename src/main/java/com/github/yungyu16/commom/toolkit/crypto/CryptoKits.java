@@ -85,14 +85,6 @@ public enum CryptoKits {
             public String urlSafeBase64String() {
                 return Base64.getUrlEncoder().encodeToString(result);
             }
-
-            public String lowerHexString() {
-                return DigestTools.encodeHexString(result, true);
-            }
-
-            public String upperHexString() {
-                return DigestTools.encodeHexString(result, false);
-            }
         }
     }
 }

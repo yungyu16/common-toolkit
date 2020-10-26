@@ -1,14 +1,13 @@
 package com.github.yungyu16.commom.toolkit.crypto;
 
-import cn.xiaoshidai.common.toolkit.base.ConditionTools;
-import cn.xiaoshidai.common.toolkit.base.DigestTools;
-import cn.xiaoshidai.common.toolkit.base.StringTools;
+import com.github.yungyu16.commom.toolkit.base.AssertKits;
 import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 
 /**
  * String decryptResult = CryptoKits.RSA.key(null).decrypt(null).base64String();
@@ -33,7 +32,7 @@ public enum CryptoKits {
     }
 
     private String getCryptoPattern() {
-        return StringTools.isBlank(cryptoPattern) ? name() : cryptoPattern;
+        return AssertKits.Strings.isBlank(cryptoPattern).value() ? name() : cryptoPattern;
     }
 
     public CryptoContext key(Key key) {
@@ -50,7 +49,7 @@ public enum CryptoKits {
 
         @SneakyThrows
         public FormatAction encrypt(byte[] rawData) {
-            ConditionTools.checkNotNull(rawData, "rawData");
+            AssertKits.Base.isNull(rawData).throwOnTrue(() -> new NullPointerException("rawData"));
             Cipher cipher = Cipher.getInstance(getCryptoPattern());
             cipher.init(Cipher.ENCRYPT_MODE, key);
             result = cipher.doFinal(rawData);
@@ -59,7 +58,7 @@ public enum CryptoKits {
 
         @SneakyThrows
         public FormatAction decrypt(byte[] rawData) {
-            ConditionTools.checkNotNull(rawData, "rawData");
+            AssertKits.Base.isNull(rawData).throwOnTrue(() -> new NullPointerException("rawData"));
             Cipher cipher = Cipher.getInstance(getCryptoPattern());
             cipher.init(Cipher.DECRYPT_MODE, key);
             result = cipher.doFinal(rawData);
@@ -80,11 +79,11 @@ public enum CryptoKits {
             }
 
             public String base64String() {
-                return DigestTools.encodeBase64String(result);
+                return Base64.getEncoder().encodeToString(result);
             }
 
             public String urlSafeBase64String() {
-                return DigestTools.encodeBase64URLSafeString(result);
+                return Base64.getUrlEncoder().encodeToString(result);
             }
 
             public String lowerHexString() {

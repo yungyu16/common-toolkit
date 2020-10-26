@@ -1,6 +1,7 @@
 package com.github.yungyu16.commom.toolkit.crypto.internal;
 
 
+import com.github.yungyu16.commom.toolkit.base.AssertKits;
 import com.github.yungyu16.commom.toolkit.crypto.KeyParser;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -11,7 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class SecretKeyParserFactory {
     public static KeyParser create(String algName) {
-        ConditionTools.checkNotBlank(algName, "algName");
+        AssertKits.Strings.isBlank(algName).throwOnTrue(() -> new NullPointerException("algName"));
         return it -> new SecretKeySpec(it, algName);
     }
 }

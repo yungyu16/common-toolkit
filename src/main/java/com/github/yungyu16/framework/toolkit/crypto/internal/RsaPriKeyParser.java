@@ -1,7 +1,7 @@
-package com.github.yungyu16.commom.toolkit.crypto.internal;
+package com.github.yungyu16.framework.toolkit.crypto.internal;
 
 
-import com.github.yungyu16.commom.toolkit.crypto.KeyParser;
+import com.github.yungyu16.framework.toolkit.crypto.KeyParser;
 
 import java.security.Key;
 import java.security.spec.InvalidKeySpecException;

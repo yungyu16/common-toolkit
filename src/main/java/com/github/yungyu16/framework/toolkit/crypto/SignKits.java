@@ -1,6 +1,5 @@
-package com.github.yungyu16.commom.toolkit.crypto;
+package com.github.yungyu16.framework.toolkit.crypto;
 
-import cn.xiaoshidai.common.toolkit.base.DigestTools;
 import lombok.SneakyThrows;
 
 import java.nio.charset.Charset;
@@ -83,14 +82,6 @@ public enum SignKits {
 
             public String base64String() {
                 return Base64.getEncoder().encodeToString(result);
-            }
-
-            public String lowerHexString() {
-                return DigestTools.encodeHexString(result, true);
-            }
-
-            public String upperHexString() {
-                return DigestTools.encodeHexString(result, false);
             }
         }
     }

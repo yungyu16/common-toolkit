@@ -1,14 +1,14 @@
-package com.github.yungyu16.commom.toolkit.crypto;
+package com.github.yungyu16.framework.toolkit.crypto;
 
-import cn.xiaoshidai.common.toolkit.base.ConditionTools;
-import cn.xiaoshidai.common.toolkit.base.DigestTools;
-import cn.xiaoshidai.web.app.boot.framework.crypto.internal.RsaPriKeyParser;
-import cn.xiaoshidai.web.app.boot.framework.crypto.internal.RsaPubKeyParser;
-import cn.xiaoshidai.web.app.boot.framework.crypto.internal.SecretKeyParserFactory;
+import com.github.yungyu16.framework.toolkit.crypto.internal.RsaPriKeyParser;
+import com.github.yungyu16.framework.toolkit.crypto.internal.RsaPubKeyParser;
+import com.github.yungyu16.framework.toolkit.crypto.internal.SecretKeyParserFactory;
+import com.google.common.base.Verify;
 import lombok.SneakyThrows;
 
 import java.security.Key;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 /**
  * Key theirRsaPublicKey = CryptoKeys.RSA_PUB_DEFAULT.parseKey(publicKeyStr);
@@ -32,17 +32,17 @@ public enum CryptoKeys {
 
     @SneakyThrows
     CryptoKeys(KeyParser keyParser) {
-        ConditionTools.checkNotNull(keyParser, "keyParser");
+        Verify.verifyNotNull(keyParser, "keyParser");
         this.keyParser = keyParser;
     }
 
     public Key parseKey(byte[] keyBytes) throws InvalidKeySpecException {
-        ConditionTools.checkNotNull(keyBytes);
+        Verify.verifyNotNull(keyBytes, "keyBytes");
         return keyParser.parse(keyBytes);
     }
 
     public Key parseKey(String base64Str) throws InvalidKeySpecException {
-        ConditionTools.checkNotBlank(base64Str);
-        return keyParser.parse(DigestTools.decodeBase64(base64Str));
+        Verify.verifyNotNull(base64Str, "base64Str");
+        return keyParser.parse(Base64.getDecoder().decode(base64Str));
     }
 }

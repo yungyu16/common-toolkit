@@ -1,4 +1,4 @@
-package com.github.yungyu16.commom.toolkit.base;
+package com.github.yungyu16.framework.toolkit.base;
 
 /**
  * CreatedDate: 2020/10/26

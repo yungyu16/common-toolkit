@@ -1,4 +1,4 @@
-package com.github.yungyu16.commom.toolkit.crypto;
+package com.github.yungyu16.framework.toolkit.crypto;
 
 import java.security.Key;
 import java.security.spec.InvalidKeySpecException;

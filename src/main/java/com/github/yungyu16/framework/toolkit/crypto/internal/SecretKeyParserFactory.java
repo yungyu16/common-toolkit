@@ -1,8 +1,8 @@
-package com.github.yungyu16.commom.toolkit.crypto.internal;
+package com.github.yungyu16.framework.toolkit.crypto.internal;
 
 
-import com.github.yungyu16.commom.toolkit.base.AssertKits;
-import com.github.yungyu16.commom.toolkit.crypto.KeyParser;
+import com.github.yungyu16.framework.toolkit.base.AssertKits;
+import com.github.yungyu16.framework.toolkit.crypto.KeyParser;
 
 import javax.crypto.spec.SecretKeySpec;
 

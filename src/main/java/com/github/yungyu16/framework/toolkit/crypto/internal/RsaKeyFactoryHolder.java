@@ -1,4 +1,4 @@
-package com.github.yungyu16.commom.toolkit.crypto.internal;
+package com.github.yungyu16.framework.toolkit.crypto.internal;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;

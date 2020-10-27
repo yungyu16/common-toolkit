@@ -1,6 +1,6 @@
-package com.github.yungyu16.commom.toolkit.crypto;
+package com.github.yungyu16.framework.toolkit.crypto;
 
-import com.github.yungyu16.commom.toolkit.base.AssertKits;
+import com.github.yungyu16.framework.toolkit.base.AssertKits;
 import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;

@@ -14,7 +14,7 @@ public class RsaKeyFactoryHolder {
         try {
             keyFactory = KeyFactory.getInstance("RSA");
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

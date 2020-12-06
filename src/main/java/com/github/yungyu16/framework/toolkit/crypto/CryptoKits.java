@@ -1,13 +1,16 @@
 package com.github.yungyu16.framework.toolkit.crypto;
 
-import com.github.yungyu16.framework.toolkit.base.AssertKits;
+
+
+import com.github.yungyu16.framework.toolkit.CodecKit;
+import com.github.yungyu16.framework.toolkit.StringKit;
+import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
 
 /**
  * String decryptResult = CryptoKits.RSA.key(null).decrypt(null).base64String();
@@ -32,7 +35,7 @@ public enum CryptoKits {
     }
 
     private String getCryptoPattern() {
-        return AssertKits.Strings.isBlank(cryptoPattern).value() ? name() : cryptoPattern;
+        return StringKit.isBlank(cryptoPattern) ? name() : cryptoPattern;
     }
 
     public CryptoContext key(Key key) {
@@ -49,7 +52,7 @@ public enum CryptoKits {
 
         @SneakyThrows
         public FormatAction encrypt(byte[] rawData) {
-            AssertKits.Base.isNull(rawData).throwOnTrue(() -> new NullPointerException("rawData"));
+            Preconditions.checkNotNull(rawData, "rawData");
             Cipher cipher = Cipher.getInstance(getCryptoPattern());
             cipher.init(Cipher.ENCRYPT_MODE, key);
             result = cipher.doFinal(rawData);
@@ -58,7 +61,7 @@ public enum CryptoKits {
 
         @SneakyThrows
         public FormatAction decrypt(byte[] rawData) {
-            AssertKits.Base.isNull(rawData).throwOnTrue(() -> new NullPointerException("rawData"));
+            Preconditions.checkNotNull(rawData, "rawData");
             Cipher cipher = Cipher.getInstance(getCryptoPattern());
             cipher.init(Cipher.DECRYPT_MODE, key);
             result = cipher.doFinal(rawData);
@@ -79,11 +82,22 @@ public enum CryptoKits {
             }
 
             public String base64String() {
-                return Base64.getEncoder().encodeToString(result);
+                byte[] bytes = CodecKit.encodeWithBase64(result);
+                return StringKit.newStringUtf8(bytes);
             }
 
             public String urlSafeBase64String() {
-                return Base64.getUrlEncoder().encodeToString(result);
+                byte[] bytes = CodecKit.encodeWithUrlBase64(result);
+                return StringKit.newStringUtf8(bytes);
+            }
+
+            /**
+             * lowerCase
+             *
+             * @return
+             */
+            public String hexString() {
+                return CodecKit.encodeWithHex(result);
             }
         }
     }

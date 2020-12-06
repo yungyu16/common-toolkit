@@ -3,40 +3,44 @@ package com.github.yungyu16.framework.toolkit;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * InternalThreadFactory.
+ */
 public class NamedThreadFactory implements ThreadFactory {
+    private static final AtomicInteger POOL_SEQ = new AtomicInteger(1);
 
-    private static final AtomicInteger poolNumber = new AtomicInteger(1);
-    private final AtomicInteger threadNumber = new AtomicInteger(1);
-    private final ThreadGroup group;
-    private final String namePrefix;
-    private final boolean isDaemon;
+    private final AtomicInteger mThreadNum = new AtomicInteger(1);
 
-    private NamedThreadFactory(String prefix, boolean daemon) {
+    private final String mPrefix;
+
+    private final boolean mDaemon;
+
+    private final ThreadGroup mGroup;
+
+    public NamedThreadFactory() {
+        this("pool-" + POOL_SEQ.getAndIncrement(), false);
+    }
+
+    public NamedThreadFactory(String prefix) {
+        this(prefix, false);
+    }
+
+    public NamedThreadFactory(String prefix, boolean daemon) {
+        mPrefix = prefix + "-thread-";
+        mDaemon = daemon;
         SecurityManager s = System.getSecurityManager();
-        group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-        namePrefix = prefix + "-" + poolNumber.getAndIncrement() + "-thread-";
-        isDaemon = daemon;
-    }
-
-    public static ThreadFactory newInstance() {
-        return newInstance("threadPool");
-    }
-
-    public static ThreadFactory newInstance(String prefix) {
-        return newInstance(prefix, false);
-    }
-
-    public static ThreadFactory newInstance(String prefix, boolean daemon) {
-        return new NamedThreadFactory(prefix, daemon);
+        mGroup = (s == null) ? Thread.currentThread().getThreadGroup() : s.getThreadGroup();
     }
 
     @Override
-    public Thread newThread(Runnable r) {
-        Thread t = new Thread(group, r, namePrefix + threadNumber.getAndIncrement(), 0);
-        t.setDaemon(isDaemon);
-        if (t.getPriority() != Thread.NORM_PRIORITY) {
-            t.setPriority(Thread.NORM_PRIORITY);
-        }
-        return t;
+    public Thread newThread(Runnable runnable) {
+        String name = mPrefix + mThreadNum.getAndIncrement();
+        Thread ret = new Thread(mGroup, runnable, name, 0);
+        ret.setDaemon(mDaemon);
+        return ret;
+    }
+
+    public ThreadGroup getThreadGroup() {
+        return mGroup;
     }
 }

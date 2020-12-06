@@ -1,14 +1,20 @@
 package com.github.yungyu16.framework.toolkit.crypto;
 
+
+
+
+
+
+import com.github.yungyu16.framework.toolkit.CodecKit;
+import com.github.yungyu16.framework.toolkit.StringKit;
 import com.github.yungyu16.framework.toolkit.crypto.internal.RsaPriKeyParser;
 import com.github.yungyu16.framework.toolkit.crypto.internal.RsaPubKeyParser;
 import com.github.yungyu16.framework.toolkit.crypto.internal.SecretKeyParserFactory;
-import com.google.common.base.Verify;
+import com.google.common.base.Preconditions;
 import lombok.SneakyThrows;
 
 import java.security.Key;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
 
 /**
  * Key theirRsaPublicKey = CryptoKeys.RSA_PUB_DEFAULT.parseKey(publicKeyStr);
@@ -32,17 +38,19 @@ public enum CryptoKeys {
 
     @SneakyThrows
     CryptoKeys(KeyParser keyParser) {
-        Verify.verifyNotNull(keyParser, "keyParser");
+        Preconditions.checkNotNull(keyParser, "keyParser");
         this.keyParser = keyParser;
     }
 
     public Key parseKey(byte[] keyBytes) throws InvalidKeySpecException {
-        Verify.verifyNotNull(keyBytes, "keyBytes");
+        Preconditions.checkNotNull(keyBytes);
         return keyParser.parse(keyBytes);
     }
 
     public Key parseKey(String base64Str) throws InvalidKeySpecException {
-        Verify.verifyNotNull(base64Str, "base64Str");
-        return keyParser.parse(Base64.getDecoder().decode(base64Str));
+        if (StringKit.isBlank(base64Str)) {
+            throw new IllegalArgumentException();
+        }
+        return keyParser.parse(CodecKit.decodeWithBase64(base64Str));
     }
 }

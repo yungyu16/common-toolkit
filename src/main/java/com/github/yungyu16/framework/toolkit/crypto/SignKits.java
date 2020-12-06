@@ -1,5 +1,9 @@
 package com.github.yungyu16.framework.toolkit.crypto;
 
+
+
+import com.github.yungyu16.framework.toolkit.CodecKit;
+import com.github.yungyu16.framework.toolkit.StringKit;
 import lombok.SneakyThrows;
 
 import java.nio.charset.Charset;
@@ -8,7 +12,6 @@ import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.util.Base64;
 
 /**
  * String signResult = SignKits.SHA256withRSA.key(key).data(data).sign().base64String();
@@ -67,6 +70,7 @@ public enum SignKits {
             }
         }
 
+
         public class FormatAction {
             public byte[] bytes() {
                 return result;
@@ -81,7 +85,22 @@ public enum SignKits {
             }
 
             public String base64String() {
-                return Base64.getEncoder().encodeToString(result);
+                byte[] bytes = CodecKit.encodeWithBase64(result);
+                return StringKit.newStringUtf8(bytes);
+            }
+
+            public String urlSafeBase64String() {
+                byte[] bytes = CodecKit.encodeWithUrlBase64(result);
+                return StringKit.newStringUtf8(bytes);
+            }
+
+            /**
+             * lowerCase
+             *
+             * @return
+             */
+            public String hexString() {
+                return CodecKit.encodeWithHex(result);
             }
         }
     }
